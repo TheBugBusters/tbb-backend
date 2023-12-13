@@ -9,3 +9,98 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
+//Aluno
+model User {
+  id        String   @id @unique @default(uuid())
+  document  String   @unique
+  name      String?
+  avatar    Avatar?
+  Score     Score?
+  createdAt DateTime @default(now())
+}
+
+//Personagem
+model Avatar {
+  id        String   @id @unique @default(uuid())
+  name      String?
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  Score     Score?
+  createdAt DateTime @default(now())
+  Game      Game?
+}
+
+//BNCC
+model HabilityBNCC {
+  id          String  @id @unique @default(uuid())
+  code        String  @unique
+  language    String?
+  description String?
+  component   String?
+  approach    String?
+  Stage       Stage?
+}
+
+model Game {
+  id        String     @id @unique @default(uuid())
+  avatar    Avatar     @relation(fields: [avatarId], references: [id])
+  avatarId  String     @unique
+  level     game_level
+  start     Boolean    @default(false)
+  startAt   DateTime
+  stages    Int        @default(7) //Algoritmo para definir a quantidade de fases que tem em um jobo baseado no perfil do Aluno.
+  GameStage GameStage?
+}
+
+model GameStage {
+  id      String @id @unique @default(uuid())
+  game    Game   @relation(fields: [gameId], references: [id])
+  gameId  String @unique
+  stage   Stage  @relation(fields: [stageId], references: [id])
+  stageId String @unique
+}
+
+model Stage {
+  id             String       @id @unique @default(uuid())
+  habilityBNCC   HabilityBNCC @relation(fields: [habilityBNCCId], references: [id])
+  habilityBNCCId String       @unique
+  alghoritm      String?      //Algoritmo para definir a produção dos desafios pelo OPENIA
+  ChallengeStage ChallengeStage?
+  GameStage      GameStage?
+}
+
+model Challenge {
+  id          String     @id @unique @default(uuid())
+  ask         String?    @db.Text
+  gptResponse String?    @db.Text
+  level       game_level
+  alghoritm   String?    //Algoritmo de score para cada aluno de forma individualizada;
+  status      Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  ChallengeStage ChallengeStage?
+}
+
+model ChallengeStage {
+  id          String    @id @unique @default(uuid())
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId String    @unique
+  stage       Stage     @relation(fields: [stageId], references: [id])
+  stageId     String    @unique
+}
+
+model Score {
+  id       String   @id @unique @default(uuid())
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String   @unique
+  avatar   Avatar   @relation(fields: [avatarId], references: [id])
+  avatarId String   @unique
+  time     DateTime
+  attempts Int
+  score    Int
+}
+
+enum game_level {
+  easy
+  medium
+  hard
+}
