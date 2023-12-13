@@ -14,10 +14,10 @@ export class ChallengesController {
   }
 
   @Post(':challengeId')
-  postChallengeResponse(
+  async postChallengeResponse(
     @Param('challengeId') challengeId: string,
-    @Body('data') data: { response: string },
-  ): Promise<any> {
+    @Body() data,
+  ) {
     return this.appService.postChallengeResponse(challengeId, data.response);
   }
 }
