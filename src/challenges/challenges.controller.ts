@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ChallengesService } from './challenges.service';
 
 @Controller('challenges')
@@ -16,7 +16,8 @@ export class ChallengesController {
   @Post(':challengeId')
   postChallengeResponse(
     @Param('challengeId') challengeId: string,
+    @Body('data') data: { response: string },
   ): Promise<any> {
-    return this.appService.postChallengeResponse(challengeId);
+    return this.appService.postChallengeResponse(challengeId, data.response);
   }
 }

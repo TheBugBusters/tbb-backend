@@ -11,7 +11,10 @@ export class ChallengesService {
     };
   }
 
-  async postChallengeResponse(challengeId: string): Promise<any> {
-    return challengeId ? true : false;
+  async postChallengeResponse(
+    challengeId: string,
+    response: string,
+  ): Promise<any> {
+    return challengeId && response ? true : false;
   }
 }
