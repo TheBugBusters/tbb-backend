@@ -8,8 +8,8 @@ COPY package*.json ./
 # Install app dependencies
 RUN npm install --force
 
-RUN npm run build
-
 COPY . .
+
+RUN npm run build
 
 CMD [ "npm", "run", "start:prod" ]
