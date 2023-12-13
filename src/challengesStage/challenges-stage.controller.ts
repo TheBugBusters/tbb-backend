@@ -1,23 +1,33 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { ChallengesService } from './challengesStage.service';
+import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { ChallengeStageService } from './challenges-stage.service';
+import { ChallengeStage } from '@prisma/client';
 
-@Controller('challenges')
-export class ChallengesController {
-  constructor(private readonly appService: ChallengesService) {}
+@Controller('challenge-stages')
+export class ChallengeStageController {
+  constructor(private readonly challengeStageService: ChallengeStageService) {}
 
-  @Get()
-  getChallenge(
-    @Query('gameId') gameId: string,
-    @Query('stageId') stageId: string,
-  ): Promise<any> {
-    return this.appService.getChallenge(gameId, stageId);
+  @Post()
+  async createChallengeStage(@Body() body: { challengeId: string; stageId: string }): Promise<ChallengeStage> {
+    return this.challengeStageService.createChallengeStage(body);
   }
 
-  @Post(':challengeId')
-  async postChallengeResponse(
-    @Param('challengeId') challengeId: string,
-    @Body() data,
-  ) {
-    return this.appService.postChallengeResponse(challengeId, data.response);
+  @Get()
+  async getAllChallengeStages(): Promise<ChallengeStage[]> {
+    return this.challengeStageService.getAllChallengeStages();
+  }
+
+  @Get(':id')
+  async getChallengeStageById(@Param('id') id: string): Promise<ChallengeStage | null> {
+    return this.challengeStageService.getChallengeStageById(id);
+  }
+
+  @Put(':id')
+  async updateChallengeStage(@Param('id') id: string, @Body() body: { challengeId?: string; stageId?: string }): Promise<ChallengeStage> {
+    return this.challengeStageService.updateChallengeStage(id, body);
+  }
+
+  @Delete(':id')
+  async deleteChallengeStage(@Param('id') id: string): Promise<ChallengeStage> {
+    return this.challengeStageService.deleteChallengeStage(id);
   }
 }

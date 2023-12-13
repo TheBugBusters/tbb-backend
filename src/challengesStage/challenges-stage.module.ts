@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ChallengesController } from './challengesStage.controller';
-import { ChallengesService } from './challengesStage.service';
+import { ChallengeStageController } from './challenges-stage.controller';
+import { ChallengeStageService } from './challenges-stage.service';
+
 @Module({
-  controllers: [ChallengesController],
-  providers: [PrismaService, ChallengesService],
+  controllers: [ChallengeStageController],
+  providers: [PrismaService, ChallengeStageService],
 })
-export class AppModule {}
+export class ChallengeStageModule {}
