@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 @Injectable()
 export class UsersService {
-  async getUser(): Promise<string> {
-    return 'Get User';
+  async getUser(document: string): Promise<{ name: string; document: string }> {
+    return {
+      name: 'Douglas Prado',
+      document,
+    };
   }
 }
