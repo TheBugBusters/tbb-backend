@@ -46,7 +46,7 @@ model Game {
   avatar    Avatar     @relation(fields: [avatarId], references: [id])
   avatarId  String     @unique
   level     game_level
-  start     Boolean    @default(false)
+  start     Boolean    @default(false) //Um jogo funcionando, quando dar play em um game ele desativa todos os outros
   startAt   DateTime
   stages    Int        @default(7) //Algoritmo para definir a quantidade de fases que tem em um jobo baseado no perfil do Aluno.
   GameStage GameStage?
